@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <!-- <link rel="stylesheet" href="./style.css"> -->
+     <style>
+        main{
+            display: flex;
+        }
+        main>div{
+            flex:1;
+        }
+        main>div:nth-child(2){
+            background-color: yellow;
+        }
+     </style>
+</head>
+
+<body>
+    <pre>
+        asynchronous 翻譯: 非同步 or 異步
+        異步(非同步) -> 有差異步伐 -> 我做我的，你做你的
+
+        同步 -> 相同步伐   -> 我先 做完結束 後面的才能啟動
+        
+        一邊寫code一邊聽歌一邊喝飲料 -> 異步
+        
+    </pre>
+
+    <button id="demo">demo</button>
+    <hr>
+    <button id="btnGetFileT" >讀取文字檔 async 參數為 true (非同步)</button>
+    <button id="btnGetFileF" >讀取文字檔 async 參數為 false(同步) </button>
+    <hr>
+    <main>
+        <div id="divLeft"></div>
+        <div id="divRight"></div>
+    </main>
+
+
+    <script>
+        
+        demo.onclick = function() {
+            let x = new XMLHttpRequest();
+            // let y = new Date();
+            x.addEventListener('load', function(){
+                console.log(this.responseText)
+            })
+            x.open('get','https://pokeapi.co/api/v2/pokemon');
+            x.send();
+        }
+        //  #divLeft  顯示 ../_file/bigfile.txt   文字檔資料
+        //  #divRight 顯示 ../_file/smallfile.txt 文字檔資料
+
+        // 10. 先讀取 bigfile.txt ， 後讀取 smallfile.txt
+        //     測試 async 參數為 true (非同步)
+        function cat(dog, egg, fish){
+            let xml = new XMLHttpRequest();
+            xml.addEventListener('load',function(){
+                console.log(this.responseText)
+                egg.innerText = this.responseText;
+            })
+            xml.open('get',dog,fish)
+            xml.send();
+        }
+        btnGetFileT.onclick = function () {
+            cat('../_file/bigfile.txt', divLeft, true)
+            cat('../_file/smallfile.txt', divRight, true)
+        }
+        btnGetFileF.onclick = function () {
+            cat('../_file/bigfile.txt', divLeft, false)
+            cat('../_file/smallfile.txt', divRight, false)
+        }
+        
+
+        // 20. 先讀取 bigfile.txt ， 後讀取 smallfile.txt
+        //     測試 async 參數為 false (同步)
+        // btnGetFileF.onclick = function () {
+        //     let xml = new XMLHttpRequest();
+        //     xml.addEventListener('load',function(){
+        //         console.log(this.responseText)
+        //         divLeft.innerText = this.responseText;
+        //     })
+        //     xml.open('get','../_file/bigfile.txt',false)
+        //     xml.send();
+
+
+
+        //     let xhr = new XMLHttpRequest();
+        //     xhr.addEventListener('load',function(){
+        //         console.log(this.responseText);
+        //         divRight.innerText = this.responseText;
+        //     })
+        //     xhr.open('get','../_file/smallfile.txt',false)
+        //     xhr.send();
+        // }
+
+    </script>
+
+</body>
+
+</html>

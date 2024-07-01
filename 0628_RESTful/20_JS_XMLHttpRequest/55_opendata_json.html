@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <script src="../_js/jquery-3.6.0.js"></script>
+</head>
+
+<body>
+
+    <h4>獨立音樂</h4>
+    <p><a href='https://data.gov.tw/dataset/6006'>https://data.gov.tw/dataset/6006</a></p>
+    <hr>
+    <button id="btnGetOpenData">取得展覽資料</button>
+    <hr>
+    <div id="divResult"></div>
+
+    <script>
+        // let xhr = new XMLHttpRequest();
+        // 10. 按鈕點選時，載入資料
+        btnGetOpenData.addEventListener('click', getFile)
+
+        // 30. 宣告 function getFile()
+        //     取得平台資料並將 起訖日期、展覽名稱 顯示在畫面上
+        function getFile() {
+            let xhr = new XMLHttpRequest();
+            xhr.addEventListener('load', function () {
+                // console.log(this.responseText);
+                let data = JSON.parse(this.responseText);
+                console.log(data[0].title);
+                console.log(data[0].startDate);
+                console.log(data[0].endDate);
+                
+                divResult.innerHTML = "活動標題 : " + data[0].title 
+                + '<br>' + "開始日期 : " + data[0].startDate + '<br>' + "結束日期 : " + data[0].endDate;
+
+                // $('#divResult').empty();
+                // $('#divResult').append(`
+                // <p>活動標題:${data[0].title}</p>
+                // <p>起始日期:${data[0].title}</p>
+                // <p>結束日期:${data[0].title}</p>
+                // `)
+            })
+            xhr.open('GET', '../_file/SearchShowAction.json');
+            xhr.send();
+
+        }
+
+    </script>
+
+</body>
+
+</html>

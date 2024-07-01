@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+</head>
+
+<body>
+
+    <h4>一般天氣預報-今明36小時天氣預報</h4>
+    <p><a href='https://data.gov.tw/dataset/6069'>https://data.gov.tw/dataset/6069</a></p>
+    <h4>預報 XML 產品預報因子欄位中文說明表</h4>
+    <p><a href='https://opendata.cwa.gov.tw/opendatadoc/MFC/A0012-001.pdf'>https://opendata.cwa.gov.tw/opendatadoc/MFC/A0012-001.pdf</a></p>
+    <h4>下載今明36小時天氣預報資料（XML格式）</h4>
+    <p><a href="https://opendata.cwa.gov.tw/fileapi/v1/opendataapi/F-C0032-001?Authorization=rdec-key-123-45678-011121314&format=XML">https://opendata.cwa.gov.tw/fileapi/v1/opendataapi/F-C0032-001?Authorization=rdec-key-123-45678-011121314&format=XML</a></p>
+    
+    <button id="btnGetOpenData">取得天氣資料</button>
+    <hr>
+    <select id="cityList">
+        <option value="請選擇城市">請選擇城市</option>
+    </select>
+    <hr>
+    <!-- <div id="divResult"></div> -->
+    <ul id="ulResult"></ul>
+    <pre>
+        1. xml -> 7/1 -> 每天都要下載?
+                -> 未來不可能
+                -> 上課期間不知道opendata會不會壞掉
+        2. 讀txt -> 讀xml -> XMLHttpRequest 
+            -> #btnGetOpenData click的時候去讀取資料
+        3. 讀到檔案的後續
+            a. 取得檔案的縣市，放到<select>
+            b. 下拉清單改變的時候，我要在網頁上放該縣市的天氣
+
+    </pre>
+    <script>
+        // 10. #btnGetOpenData click 讀 xml檔案
+        // a. 取得縣市的名字
+        // b. 放到主控室查看
+        // c. 如果主控台看到了，在想辦法放到畫面上
+
+        // 兩種方式都可以
+        // document.getElementById('btnGetOpenData').addEventListener('click',function(){}
+        // btnGetOpenData.onclick = function(){console.log();}
+        document.getElementById('btnGetOpenData')
+            .addEventListener('click',function(){
+                let xhr = new XMLHttpRequest();
+                xhr.addEventListener('load',function(){
+                    // console.log(this.responseText); // responseText格式是xml
+                    let domqq = new DOMParser();
+                    let solve = domqq.parseFromString(this.responseText,"text/xml")
+                    // console.log(solve)
+                    let cityName = solve.getElementsByTagName('locationName');
+                    // console.log(cityName);
+                    // for(let i = 0; i <script cityName.length; i++){
+                    //     console.log(cityName[i].childNodes[0].wholeText);
+                        
+                        
+                    //     let li = document.createElement('li');
+                    //     li.textContent = cityName[i].childNodes[0].wholeText;
+                    //     document.getElementById('ulResult').appendChild(li);
+                    // }
+
+                    // v6 失敗 須將類陣列轉為陣列
+                    // cityName.forEach((x)=>{
+                    //     console.log(x);
+                    // })
+
+                    // 非用陣列不可的話，可以用Array.from 將類陣列轉為真陣列去做使用
+                    let final = Array.from(cityName);
+                    // console.log(final);
+                    final.forEach(x => {
+                        // console.log(x.innerHTML);
+                        let myOption = document.createElement('option')
+                        // console.log(myOption);
+                        myOption.innerHTML = x.innerHTML;
+                        myOption.value = x.innerHTML;
+                        document.getElementById('cityList').append(myOption)
+                    })
+
+                    // cityList.innerHTML = cityName[1];
+                })
+                xhr.open('GET','../_file/F-C0032-001.xml');
+                xhr.send();
+            })
+        
+
+
+
+
+
+
+   
+
+   
+
+        // 10. 縣市名稱 、 各縣市天氣資料
+        let city = [], weather = [];
+
+        // 20. 使用 XMLHttpRequest 物件
+        let xhr = new XMLHttpRequest();
+        xhr.addEventListener('load', () => {
+            // 25. 取得縣市名稱，放入變數 city
+            // 28. 取得各縣市天氣，放入變數 weather
+        });
+
+        // 30. 點選按鈕時，呼叫 XMLHttpRequest 出發取得資料
+        btnGetOpenData.addEventListener('click', () => {
+            let url = '';
+            xhr.open('GET', url);
+            xhr.send();
+        })
+
+        // 40. 設計一個function:  將縣市名稱放入 #cityList
+        //   * 這個function在取得天氣資料後呼叫
+
+        // 45. 請設計一個function: 帶出使用者所選擇縣市對應的天氣資料
+        //   * 這個function在使用者選擇不同縣市時呼叫
+
+    </script>
+</body>
+
+</html>

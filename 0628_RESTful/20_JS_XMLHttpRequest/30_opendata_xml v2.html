@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <script src="../_js/jquery-3.6.0.js"></script>
+</head>
+
+<body>
+    <h4>一般天氣預報-今明36小時天氣預報</h4>
+    <p><a href='https://data.gov.tw/dataset/6069'>https://data.gov.tw/dataset/6069</a></p>
+    <h4>預報 XML 產品預報因子欄位中文說明表</h4>
+    <p><a
+            href='https://opendata.cwa.gov.tw/opendatadoc/MFC/A0012-001.pdf'>https://opendata.cwa.gov.tw/opendatadoc/MFC/A0012-001.pdf</a>
+    </p>
+    <h4>下載今明36小時天氣預報資料（XML格式）</h4>
+    <p><a
+            href="https://opendata.cwa.gov.tw/fileapi/v1/opendataapi/F-C0032-001?Authorization=rdec-key-123-45678-011121314&format=XML">https://opendata.cwa.gov.tw/fileapi/v1/opendataapi/F-C0032-001?Authorization=rdec-key-123-45678-011121314&format=XML</a>
+    </p>
+
+    <button id="btnGetOpenData">取得天氣資料</button>
+    <hr>
+    <select id="cityList" onchange="changeCityList(this.selectedIndex)">
+        
+    </select>
+    <hr>
+    <div id="divResult"></div>
+
+    <pre>
+        1. select 事件
+        2. #divResult 顯示被選到的縣市的天氣資料
+        3.
+
+    </pre>
+
+    <script>
+        let weather;
+        let xhr = new XMLHttpRequest();
+        xhr.addEventListener('load', function () {
+            // XML -> 加工
+            // console.log(this.responseText);
+            let p = new DOMParser();
+            let XMLDom = p.parseFromString(this.responseText, 'text/xml');
+
+            // 設定下拉選單
+            setCityList(XMLDom.getElementsByTagName('locationName'));
+
+            // console.log( XMLDom.querySelectorAll('locationName+weatherElement')  );
+
+            // 自己測試的
+            // let time = XMLDom.querySelectorAll('locationName+weatherElement')[0].childNodes[3].childNodes[1].innerHTML
+            // console.log(time);
+
+            weather = XMLDom.querySelectorAll('locationName+weatherElement');
+            // let y = x[0]; // 縣市的天氣 0 是指臺北市
+            // let z = y.children[1] // 台北的 天氣的 第一組
+            // console.log(y);
+            // // ------------------------------------------------------------
+            // let a1 = z.children[0].innerHTML;
+            // let a2 = z.children[1].innerHTML;
+            // let a3 = z.children[2].children[0].innerHTML;
+
+            // console.log(a1);
+            // console.log(a2);
+            // console.log(a3);
+
+            // for (let i = 0; i < x.length; i++) {
+            //     let y = x[i];
+            //         for (let j = 0; j < 3; j++) {
+            //             let z = y.children[j];
+            //             console.log(z);
+            //             let a1 = z.children[0].innerHTML;
+            //             let a2 = z.children[1].innerHTML;
+            //             let a3 = z.children[2].children[0].innerHTML;
+            //             console.log(a1);
+            //             console.log(a2);
+            //             console.log(a3);
+            //         }
+            // }
+
+
+        })
+
+        function changeCityList(x) {
+            // 用jQuery版本
+            // $('#divResult').text('')
+            $('#divResult').empty();
+            $(weather[x]).find('time').each(function(){
+                let st = $(this).find('startTime').text();
+                let et = $(this).find('endTime').text();
+                let pn = $(this).find('parameterName').text();
+                $('#divResult').append(`${st} <br> ${et} <br> ${pn} <br>`);
+
+            })
+            
+            // 只用JS寫的版本
+            // divResult.innerHTML = '';
+            // console.clear();
+            // let y = weather[x];
+            // for (let j = 1; j <= 3; j++) {
+            //     let z = y.children[j];
+            //     let a1 = z.children[0].innerHTML;
+            //     let a2 = z.children[1].innerHTML;
+            //     let a3 = z.children[2].children[0].innerHTML;
+            //     console.log(a1);
+            //     console.log(a2);
+            //     console.log(a3);
+            //     divResult.innerHTML += a1 + "<br><br>" + a2 + "<br><br>" + a3 + "<br>";
+            // }
+
+        }
+
+        function setCityList(temp) {
+            let data = Array.from(temp);
+
+            data.forEach((value, index) => {
+                let myoption = document.createElement('option');
+                myoption.innerHTML = value.innerHTML;
+                myoption.value = index;
+                document.getElementById('cityList').append(myoption);
+            })
+        }
+
+        // 按鈕綁定事件
+        document.getElementById('btnGetOpenData').addEventListener('click', function () {
+            // 抓檔案
+            xhr.open('GET', '../_file/F-C0032-001.xml');
+            xhr.send();
+        })
+
+
+
+        // function setCityWeather() {
+        //     let wheatherData = document.getElementsByTagName('weatherElement')
+        //     document.getElementsById('divResult').append(wheatherData)
+        // }
+    </script>
+</body>
+
+</html>

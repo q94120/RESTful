@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../0628_RESTful/_js/jquery-3.6.0.js"></script>
+</head>
+<body>
+    <script>
+        let apple = ['亞歷山大3', '梅瑟莫', '菈尼', '拉達岡']
+        // // v1
+        // console.log(apple[0]);
+        // console.log(apple[1]);
+        // console.log(apple[2]);
+        // console.log(apple[3]);
+        
+
+        // v2
+        // for(let i = 0; i < apple.length; i++){
+        //     console.log(apple[i]);
+        // }
+
+        // v3
+        // for(const k in apple){
+        //     console.log(apple[k]);
+        // }
+
+        // v4
+        // for(const k of apple){
+        //     console.log(k);
+        // }
+
+        // v5
+        // $.each(apple, function(i, v){
+        //     console.log(v);
+        // })
+        // v6
+        apple.forEach(x=>{
+            console.log(x);
+        })
+    </script>
+    
+</body>
+</html>
