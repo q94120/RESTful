@@ -22,6 +22,8 @@
 
         // 30. 宣告 function getFile()
         //     取得平台資料並將 起訖日期、展覽名稱 顯示在畫面上
+        let url = '../_file/SearchShowAction.json';
+        // let url = http://
         function getFile() {
             let xhr = new XMLHttpRequest();
             xhr.addEventListener('load', function () {
@@ -41,10 +43,13 @@
                 // <p>結束日期:${data[0].title}</p>
                 // `)
             })
-            xhr.open('GET', '../_file/SearchShowAction.json');
+            xhr.open('GET', url);
             xhr.send();
 
         }
+
+
+        
 
     </script>
 

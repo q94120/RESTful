@@ -7,6 +7,7 @@
 </head>
 
 <body>
+    https://jsonplaceholder.typicode.com/todos
 
     <h4>jQuery.ajax()</h4>
     <p><a href='https://api.jquery.com/jQuery.ajax/'>https://api.jquery.com/jQuery.ajax/</a></p>
@@ -15,6 +16,20 @@
     <script>
         // 10. 先前的兩個檔案使用 $.get() 以及 $.post()
         //     請在閱讀文件後，嘗試用 $.ajax() 進行改寫
+        let url = 'https://reqres.in/api/users';
+        let data = {
+            "name": '百變皮卡丘',
+            "job": '放電',
+            "city": '台中'
+        }
+        $.ajax({
+            method: "POST",
+            url: url,
+            data: data
+        }).done(function(apple){
+            console.log(apple);
+        })
+
     </script>
 
 </body>

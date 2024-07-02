@@ -13,7 +13,11 @@
     <p><a href='https://api.jquery.com/jquery.post/'>https://api.jquery.com/jquery.post/</a></p>
     <hr>
     <button id="btnPostData">寫入資料(測試)</button>
-    <div id="divResult"></div>
+    <div id="divResult">
+        <input type="text" id="userName">
+        <input type="text" id="userJob">
+    </div>
+     
 
     <script>
         // 10. 按鈕點選後，寫入使用者資料 (測試)
@@ -22,7 +26,16 @@
             // 20. $.post(網址, {要寫入的資料} ,function(){})
             //      測試網址 https://reqres.in/api/users
             //      寫入成功後，網站會提示寫入成功時間
-        
+            let url = 'https://reqres.in/api/users';
+            let data = {
+                "name": $('#userName').val(),
+                // "name": $('#userName').prop('value'),
+                "job": $('#userJob').val()
+            }
+            let callback = function(apple){
+                console.log(apple);
+            }
+            $.post(url, data, callback)             
         }
 
     </script>

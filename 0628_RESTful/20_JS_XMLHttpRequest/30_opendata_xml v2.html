@@ -123,9 +123,12 @@
 
         // 按鈕綁定事件
         document.getElementById('btnGetOpenData').addEventListener('click', function () {
-            // 抓檔案
-            xhr.open('GET', '../_file/F-C0032-001.xml');
-            xhr.send();
+            // 抓檔案:本地的檔案
+             
+
+            // 抓檔案url(7/2)
+            // xhr.open('GET', 'https://opendata.cwa.gov.tw/fileapi/v1/opendataapi/F-C0032-001?Authorization=rdec-key-123-45678-011121314&format=XML">https://opendata.cwa.gov.tw/fileapi/v1/opendataapi/F-C0032-001?Authorization=rdec-key-123-45678-011121314&format=XML');
+            // xhr.send();
         })
 
 

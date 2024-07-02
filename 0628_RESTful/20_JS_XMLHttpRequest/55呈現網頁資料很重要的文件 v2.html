@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <script src="../_js/jquery-3.6.0.js"></script>
+    <style>
+        img{
+            width: 20%;
+        }
+        table, td, tr{
+            border: 1px black solid;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h4>獨立音樂</h4>
+    <p><a href='https://data.gov.tw/dataset/6006'>https://data.gov.tw/dataset/6006</a></p>
+    <hr>
+    <button id="btnGetOpenData">取得展覽資料(2024)</button>
+    <button id="btnGetOpenData2022">取得展覽資料(2022)</button>
+    <hr>
+    <div id="divResult"></div>
+
+    <script>
+        // let xhr = new XMLHttpRequest();
+        // 10. 按鈕點選時，載入資料
+        btnGetOpenData.addEventListener('click', getFile)
+
+        // 30. 宣告 function getFile()
+        //     取得平台資料並將 起訖日期、展覽名稱 顯示在畫面上
+        let url = '../_file/SearchShowAction.json';
+        // let url = http://
+        function getFile() {
+            let xhr = new XMLHttpRequest();
+            xhr.addEventListener('load', function () {
+                // console.log(this.responseText);
+                let musicData = JSON.parse(this.responseText);
+                $('#divResult').empty();
+                musicData.forEach(function (item, index) {
+                    // console.log(item);
+                    $('#divResult').append(`<p>期間:${item.startDate} - ${item.endDate}</p>`)
+                    $('#divResult').append(`<p>名稱:${item.title}</p>`)
+                   
+                    // 三元
+                    // $('#divResult').append(`<p>圖片:${item.imageUrl != "" ? item.imageUrl : '沒有提供'}</p>`)
+                    
+                    // if else 判斷方法
+                    // if (item.imageUrl != "") {
+                    //     $('#divResult').append(`<p>圖片:${item.imageUrl}</p>`)
+                    // } else {
+                    //     $('#divResult').append(`<p>圖片:未提供</p>`)
+                    // }
+                    // $('#divResult').append(`<p>場次票價:${item.showInfo}</p>`)
+
+                    // 邏輯運算子
+                    $('#divResult').append(`<p>圖片:${item.imageUrl || '1沒有提供'}</p>`)
+
+                    //沒有用到index所以就拿掉
+                    item.showInfo.forEach(function(show){
+                        // console.log(show);
+                        let info = '';
+                        for (const key in show) {
+                            // console.log(show[key]);
+                            info += `${key} : ${show[key]} &nbsp;&nbsp;&nbsp; <br>`
+                        }
+                        $('#divResult').append(`<hr><p>${info}</p>`);
+                    })
+                    $('#divResult').append(`<hr>`)
+                });
+                // 有規律，所以使用迴圈
+                // console.log(musicData[0]);
+                // console.log(musicData[1]);
+                // console.log(musicData[2]);
+            })
+            xhr.open('GET', url);
+            xhr.send();
+
+        }
+
+        btnGetOpenData2022.addEventListener('click', getFile2022)
+
+        let url2022 = '../_file/music.txt'
+        function getFile2022(){
+            let xhr2022 = new XMLHttpRequest();
+
+            // 取得音樂檔案
+            xhr2022.addEventListener('load', function () {
+                let musicData2022 = JSON.parse(this.responseText);
+                $('#divResult').empty()
+                // console.log(musicData2022);
+
+                // 展覽資訊
+                musicData2022.forEach(function(show, index){
+                    // console.log(show);
+                    $('#divResult').append(`<p>期間:${show.startDate} - ${show.endDate}</p>`)
+                    $('#divResult').append(`<p>名稱:${show.title}</p>`)
+                    $('#divResult').append(`<img src="${show.imageUrl || ''}"></img>`)
+                   
+                    // 展覽的場次資訊--- 開始
+                    let info2022 = '<table>';
+                    show.showInfo.forEach(show => {
+                        info2022 += '<tr>';
+                            for (const key in show) {
+                                info2022 += `<td> ${key}:${show[key]}</td>`
+                            }
+                            info2022 += '</tr>'
+                    })
+                    info2022 += '</table>';
+                    // console.log(info2022);
+                    $('#divResult').append(info2022)
+                    // 展覽的場次資訊--- 結束
+                    $('#divResult').append('<hr>')
+                })
+            })
+            xhr2022.open('GET', url2022);
+            xhr2022.send();
+        
+        }
+        
+
+    </script>
+
+</body>
+
+</html>

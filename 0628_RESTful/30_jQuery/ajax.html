@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <script src="../_js/jquery-3.6.0.js"></script>
+    <style>
+        p {
+            background-color: pink;
+        }
+
+    </style>
+</head>
+
+<body>
+
+        <button id="btn">$.ajax( ) more</button>
+        <h5>增加一點點樣式</h5>
+        <p></p>
+    <script>
+
+        let url = 'https://jsonplaceholder.typicode.com/todos';
+      btn.onclick = function(){
+        $.get(url, function(data){
+            // console.log(data);
+            data.forEach(element => {
+                // console.log(element);
+                $('p').append(`<input type="checkbox"> ${element.id}-${element.title}<br><br>`)
+            });
+        })
+      }  
+
+
+      // true的話就勾起checkbox並且加入刪除線
+      // false的話就保持原樣
+
+
+
+
+        // let data = {
+        //     "name": '百變皮卡丘',
+        //     "job": '放電',
+        //     "city": '台中'
+        // }
+        // $.ajax({
+        //     method: "POST",
+        //     url: url,
+        //     data: data
+        // }).done(function(apple){
+        //     console.log(apple);
+        // })
+
+    </script>
+
+</body>
+
+</html>
